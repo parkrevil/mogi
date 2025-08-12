@@ -19,8 +19,8 @@
         "reflect-metadata": "^0.2.2",
       },
     },
-    "apps/scrapping-server": {
-      "name": "scrapping-server",
+    "apps/scraping-server": {
+      "name": "scraping-server",
       "dependencies": {
         "@nestjs/common": "^11.1.6",
         "@nestjs/core": "^11.1.6",
@@ -854,7 +854,7 @@
 
     "scheduler": ["scheduler@0.26.0", "", {}, "sha512-NlHwttCI/l5gCPR3D1nNXtWABUmBwvZpEQiD4IXSbIDq8BzLIK/7Ir5gTFSGZDUu37K5cMNp0hFtzO38sC7gWA=="],
 
-    "scrapping-server": ["scrapping-server@workspace:apps/scrapping-server"],
+    "scraping-server": ["scraping-server@workspace:apps/scraping-server"],
 
     "semver": ["semver@6.3.1", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA=="],
 

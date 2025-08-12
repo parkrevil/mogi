@@ -1,5 +1,5 @@
 {
-  "name": "scrapping-server",
+  "name": "scraping-server",
   "scripts": {
     "dev": "bun --hot src/main.ts"
   },

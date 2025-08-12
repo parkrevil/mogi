@@ -4,7 +4,7 @@
   "private": true,
   "workspaces": [
     "apps/api-server",
-    "apps/scrapping-server",
+    "apps/scraping-server",
     "apps/website",
     "packages/bun-shared"
   ],
@@ -26,9 +26,9 @@
   "packageManager": "bun@1.2.0",
   "scripts": {
     "dev:api-server": "bun run --cwd apps/api-server dev",
-    "dev:scrapping-server": "bun run --cwd apps/scrapping-server dev",
+    "dev:scraping-server": "bun run --cwd apps/scraping-server dev",
     "dev:website": "bun run --cwd apps/website dev",
-    "dev:all": "bun run dev:api-server & bun run dev:scrapping-server & bun run dev:website",
+    "dev:all": "bun run dev:api-server & bun run dev:scraping-server & bun run dev:website",
     "clean": "rm -rf apps/*/dist apps/*/.next apps/*/node_modules"
   },
   "devDependencies": {
