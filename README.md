@@ -21,7 +21,7 @@
 
 **먼저 그 것들을 만들어 훌륭한 레퍼런스가 되어주신 그 분들께 감사의 말씀을 전합니다.** 🙏
 
-📌 **개발 파트가 궁금하시거나 코드에 대한 피드백은 [Contributing](https://github.com/parkrevil/mogi?tab=contributing-ov-file) 탭을 확인해주세요. 언제나 환영합니다.**
+📌 **개발 파트가 궁금하시거나 코드에 대한 피드백은 [Contributing](https://github.com/parkrevil/mogi?tab=contributing-ov-file)을 확인해주세요. 언제나 환영합니다.**
 
 🗨️ **문제가 있거나 전하실 말씀은 [디스코드]()를 통해 말씀해주세요.**
 
