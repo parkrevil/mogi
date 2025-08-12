@@ -21,7 +21,7 @@
 
 **먼저 그 것들을 만들어 훌륭한 레퍼런스가 되어주신 그 분들께 감사의 말씀을 전합니다.** 🙏
 
-📌 **개발 파트가 궁금하시거나 코드에 대한 피드백은 [CONTRIBUTING](CONTRIBUTING.md)을 읽어주세요. 언제나 환영합니다.**
+📌 **개발 파트가 궁금하시거나 코드에 대한 피드백은 [Contributing](https://github.com/parkrevil/mogi?tab=contributing-ov-file) 탭을 확인해주세요. 언제나 환영합니다.**
 
 🗨️ **문제가 있거나 전하실 말씀은 [디스코드]()를 통해 말씀해주세요.**
 
@@ -38,4 +38,4 @@
 
 ## 📝 라이선스
 
-이 프로젝트는 MIT 라이센스 하에 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
+이 프로젝트는 MIT 라이센스 하에 배포됩니다. 자세한 내용은 [LICENSE](https://github.com/parkrevil/mogi?tab=MIT-1-ov-file) 파일을 참조하세요.
