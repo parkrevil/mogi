@@ -43,8 +43,8 @@ make dev-suction-client
 ```
 
 > [!TIP]
-> 실시간 패킷을 가져오기 위해서는 suction-client는 Network Bridge 모드가 활성화된 VMWare에서 실행해야합니다.
-> 로컬 환경에서는 미리 캡처한 samples/*.pcap 파일로 개발합니다.
+> 실시간 패킷을 가져오기 위해서는 suction-client는 Network Bridge 모드가 활성화된 VMWare에서 실행해야합니다.<br>
+로컬 환경에서는 미리 캡처한 samples/*.pcap 파일로 개발합니다.
 
 ## 🛠️ 기술 스택
 
