@@ -1,36 +1,42 @@
 {
-  "name": "mogi-monorepo",
+  "name": "mogi",
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "apps/api-server",
+    "apps/scrapping-server",
+    "apps/website",
+    "packages/bun-shared"
   ],
+  "author": "revil",
+  "email": "revil.com@gmail.com",
+  "license": "MIT",
+  "description": "Mabinogi Mobile 3rd party service.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/revil/mogi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/revil/mogi/issues"
+  },
+  "homepage": "https://github.com/revil/mogi#readme",
+  "engines": {
+    "bun": ">=1.2.0"
+  },
+  "packageManager": "bun@1.2.0",
   "scripts": {
-    "dev:website": "bun run --cwd apps/website dev",
     "dev:api-server": "bun run --cwd apps/api-server dev",
-    "dev:scrapper": "bun run --cwd apps/scrapper dev",
-    "dev:suction-server": "go run apps/suction-server/main.go",
-    "dev:suction-client": "go run apps/suction-client/main.go",
-    "dev:all": "concurrently \"bun run dev:website\" \"bun run dev:api-server\" \"bun run dev:scrapper\" \"bun run dev:suction-server\" \"bun run dev:suction-client\"",
-    "build:website": "bun run --cwd apps/website build",
-    "build:api-server": "bun run --cwd apps/api-server build",
-    "build:scrapper": "bun run --cwd apps/scrapper build",
-    "build:suction-server": "go build -o apps/suction-server/bin/server apps/suction-server/main.go",
-    "build:suction-client": "go build -o apps/suction-client/bin/client apps/suction-client/main.go",
-    "build:all": "bun run build:website && bun run build:api-server && bun run build:scrapper && bun run build:suction-server && bun run build:suction-client",
-    "test:website": "bun run --cwd apps/website test",
-    "test:api-server": "bun run --cwd apps/api-server test",
-    "test:scrapper": "bun run --cwd apps/scrapper test",
-    "test:suction-server": "go test ./apps/suction-server/...",
-    "test:suction-client": "go test ./apps/suction-client/...",
-    "test:all": "bun run test:website && bun run test:api-server && bun run test:scrapper && bun run test:suction-server && bun run test:suction-client",
-    "lint:all": "bun run --cwd apps/website lint && bun run --cwd apps/api-server lint && bun run --cwd apps/scrapper lint",
-    "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules apps/*/dist apps/*/.next apps/*/bin"
+    "dev:scrapping-server": "bun run --cwd apps/scrapping-server dev",
+    "dev:website": "bun run --cwd apps/website dev",
+    "dev:all": "bun run dev:api-server & bun run dev:scrapping-server & bun run dev:website",
+    "clean": "rm -rf apps/*/dist apps/*/.next apps/*/node_modules"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "concurrently": "^8.2.2",
+    "typescript": "^5.0.0",
+    "@types/node": "^24"
+  },
+  "resolutions": {
     "typescript": "^5.0.0"
   }
 }
