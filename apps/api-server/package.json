@@ -1,12 +1,13 @@
 {
   "name": "api-server",
   "scripts": {
-    "dev": "bun --hot src/main.ts"
+    "dev": "NODE_ENV=local bun --hot src/main.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.6",
     "@nestjs/core": "^11.1.6",
     "@nestjs/platform-express": "^11.1.6",
+    "@nestjs/config": "^3.2.0",
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {}
