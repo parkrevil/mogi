@@ -27,7 +27,7 @@ bun install
 go mod tidy
 ```
 
-#### 4. 컨테이너 생성성
+#### 4. 컨테이너 생성
 ```bash
 docker-compose up -d
 ```
