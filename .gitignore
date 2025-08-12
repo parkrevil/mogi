@@ -129,3 +129,5 @@ dump.rdb
 
 # Local development
 .local/
+
+.container-volumes/

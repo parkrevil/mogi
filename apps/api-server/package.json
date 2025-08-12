@@ -8,7 +8,10 @@
     "@nestjs/core": "^11.1.6",
     "@nestjs/platform-express": "^11.1.6",
     "@nestjs/config": "^3.2.0",
-    "reflect-metadata": "^0.2.2"
+    "@nestjs/mongoose": "^10.0.4",
+    "mongoose": "^8.6.0",
+    "reflect-metadata": "^0.2.2",
+    "@mogi/bun-shared": "workspace:*"
   },
   "devDependencies": {}
 }
