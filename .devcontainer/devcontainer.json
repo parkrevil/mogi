@@ -37,7 +37,8 @@
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
           "source.organizeImports": "explicit"
-        }
+        },
+        "keyboard.dispatch": "keyCode"
       }
     }
   },
