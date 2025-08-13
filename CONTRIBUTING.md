@@ -8,31 +8,31 @@
 
 ## 🚀 시작하기
 
-### 환경 설정
-#### 1. 저장소 받기
+Dev Container를 사용하여 개발했으며 동일한 환경을 유지하기 위해 Dev Container 사용을 권장드립니다.
+<br>
+Dev Container 외에 다른 가이드는 하지 않습니다.
+
+### 1. 저장소 받기
 ```bash
 git clone https://github.com/parkrevil/mogi.git
 cd mogi
 ```
 
-#### 2. 초기 세팅
-정상적인 컨테이너 실행을 위해 아래 커맨드를 실행해주세요.
-```bash
-./scripts/int.sh
-```
+### 2. VSCode / Cursor에서 Dev Container 실행
+1. VS Code / Cursor에서 프로젝트 폴더를 엽니다.
+2. `Ctrl+Shift+P` (또는 `Cmd+Shift+P`)를 눌러 명령 팔레트를 엽니다.
+3. `Dev Containers: Rebuid and Reopen in Container`를 선택합니다.
+4. 컨테이너 빌드 및 설정이 자동으로 완료됩니다.
+5. `🚀 Ready to start development!` 메시지가 나오면 설정이 완료 된 것입니다.
 
-#### 3. 패키지 설치
-```bash
-bun install
-go mod tidy
-```
+> [!NOTE]
+> Dev Container는 다음을 자동으로 설정합니다:
+> - Docker 환경 설정
+> - Docker Container 빌드 및 실행
+> - 개발 도구 설치 (Bun, Go tools 등)
+>   - 프로젝트 의존성 설치
 
-#### 4. 컨테이너 생성
-```bash
-docker-compose up -d
-```
-
-#### 5. 실행
+### 3. 실행
 ```bash
 bun run dev:api-server
 bun run dev:scraping-server
