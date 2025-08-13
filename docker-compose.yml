@@ -1,9 +1,11 @@
+name: mogi-dev
+
 services:
-  mogi-mongo-dev:
+  mongo:
     build:
       context: ./docker/mongo
       dockerfile: Dockerfile
-    container_name: mogi-mongo-dev
+    container_name: mogi-dev-mongo
     command: mongod --config /etc/mongod.conf
     ports:
       - "27117:27117"
@@ -12,10 +14,10 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: 1234
       MONGO_INITDB_DATABASE: mogi
     volumes:
-      - mogi-mongo-dev-data:/data/db
+      - mogi-dev-mongo-data:/data/db
 
 volumes:
-  mogi-mongo-dev-data:
+  mogi-dev-mongo-data:
     driver: local
     driver_opts:
       type: none

@@ -2,7 +2,10 @@
   "name": "Mogi Development Environment",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "runArgs": [
-    "--network=host"
+    "--network=host",
+    "--name=devcontainer",
+    "--label=com.docker.compose.project=mogi-dev",
+    "--label=com.docker.compose.service=devcontainer"
   ],
   "initializeCommand": "sudo chown -R 1000:1000 ${localWorkspaceFolder} && sudo chmod -R 755 ${localWorkspaceFolder}",
   "features": {

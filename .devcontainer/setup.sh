@@ -75,7 +75,7 @@ docker-compose -f ./docker-compose.yml up -d
 
 # Wait for MongoDB to be ready
 echo "⏳ Waiting for MongoDB to be ready..."
-until docker exec mogi-mongo-dev mongosh --port 27117 -u mogi -p 1234 --authenticationDatabase admin --eval "db.adminCommand('ping')" > /dev/null 2>&1; do
+until docker exec mogi-dev-mongo mongosh --port 27117 -u mogi -p 1234 --authenticationDatabase admin --eval "db.adminCommand('ping')" > /dev/null 2>&1; do
   echo "  ⏳ MongoDB is not ready yet, waiting..."
   sleep 2
 done
@@ -83,7 +83,7 @@ echo "✅ MongoDB is ready!"
 
 # Setup MongoDB Replica Set
 echo "🔄 Setting up MongoDB Replica Set..."
-docker exec mogi-mongo-dev mongosh --port 27117 -u mogi -p 1234 --authenticationDatabase admin --eval "
+docker exec mogi-dev-mongo mongosh --port 27117 -u mogi -p 1234 --authenticationDatabase admin --eval "
 try {
   rs.initiate({
     _id: 'rs0',
@@ -103,7 +103,7 @@ try {
 
 # Wait for replica set to be ready
 echo "⏳ Waiting for replica set to be ready..."
-until docker exec mogi-mongo-dev mongosh --port 27117 -u mogi -p 1234 --authenticationDatabase admin --eval "rs.status()" > /dev/null 2>&1; do
+until docker exec mogi-dev-mongo mongosh --port 27117 -u mogi -p 1234 --authenticationDatabase admin --eval "rs.status()" > /dev/null 2>&1; do
   echo "  ⏳ Replica set is not ready yet, waiting..."
   sleep 2
 done
@@ -111,7 +111,7 @@ echo "✅ Replica set is ready!"
 
 # Create database and collections
 echo "🗄️ Creating database and collections..."
-docker exec mogi-mongo-dev mongosh --port 27117 -u mogi -p 1234 --authenticationDatabase admin --eval "
+docker exec mogi-dev-mongo mongosh --port 27117 -u mogi -p 1234 --authenticationDatabase admin --eval "
 use mogi
 db.createCollection('mogi')
 "
