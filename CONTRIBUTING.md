@@ -18,7 +18,7 @@ cd mogi
 #### 2. 초기 세팅
 정상적인 컨테이너 실행을 위해 아래 커맨드를 실행해주세요.
 ```bash
-./scripts/setup.sh
+./scripts/int.sh
 ```
 
 #### 3. 패키지 설치

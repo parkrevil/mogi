@@ -2,36 +2,17 @@ services:
   mongo:
     image: mongo:7.0
     container_name: mogi-mongo
-    command: mongod --replSet rs0 --port 27017 --auth --keyFile /data/mongodb-keyfile
+    command: mongod --replSet rs0 --port 27117 --auth --keyFile /data/keyfile --bind_ip 0.0.0.0
     ports:
-      - "27017:27017"
+      - "27117:27117"
     environment:
       MONGO_INITDB_ROOT_USERNAME: mogi
       MONGO_INITDB_ROOT_PASSWORD: 1234
+      MONGO_INITDB_DATABASE: mogi
     volumes:
       - mongo-data:/data/db
-      - ./docker/mongo/mongodb-keyfile:/data/mongodb-keyfile
-    networks:
-      - mogi-network
-    healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-
-  mongo-setup:
-    image: mongo:7.0
-    container_name: mogi-mongo-setup
-    depends_on:
-      mongo:
-        condition: service_healthy
-    volumes:
-      - ./docker/mongo/setup.sh:/mongo-setup.sh
-    command: sh /mongo-setup.sh
-    networks:
-      - mogi-network
-    restart: on-failure
+      - ./docker/mongo/keyfile:/data/keyfile
+      - ./docker/mongo/setup.sh:/data/setup.sh
 
 volumes:
   mongo-data:
@@ -40,7 +21,3 @@ volumes:
       type: none
       o: bind
       device: ./.container-volumes/mongo/data
-
-networks:
-  mogi-network:
-    driver: bridge
