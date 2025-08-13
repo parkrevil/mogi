@@ -1,8 +1,10 @@
 services:
-  mongo:
-    image: mongo:7.0
-    container_name: mogi-mongo
-    command: mongod --replSet rs0 --port 27117 --auth --keyFile /data/keyfile --bind_ip 0.0.0.0
+  mogi-mongo-dev:
+    build:
+      context: ./docker/mongo
+      dockerfile: Dockerfile
+    container_name: mogi-mongo-dev
+    command: mongod --config /etc/mongod.conf
     ports:
       - "27117:27117"
     environment:
@@ -10,12 +12,10 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: 1234
       MONGO_INITDB_DATABASE: mogi
     volumes:
-      - mongo-data:/data/db
-      - ./docker/mongo/keyfile:/data/keyfile
-      - ./docker/mongo/setup.sh:/data/setup.sh
+      - mogi-mongo-dev-data:/data/db
 
 volumes:
-  mongo-data:
+  mogi-mongo-dev-data:
     driver: local
     driver_opts:
       type: none

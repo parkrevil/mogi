@@ -1,0 +1,72 @@
+{
+  "name": "Mogi Development Environment",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "runArgs": [
+    "--network=host"
+  ],
+  "initializeCommand": "sudo chown -R 1000:1000 ${localWorkspaceFolder} && sudo chmod -R 755 ${localWorkspaceFolder}",
+  "features": {
+    "ghcr.io/devcontainers/features/go:1": {
+      "version": "1.25"
+    },
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "golang.go",
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-typescript-next",
+        "ms-vscode.vscode-json",
+        "redhat.vscode-yaml",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "go.useLanguageServer": true,
+        "go.gopath": "/go",
+        "go.toolsManagement.checkForUpdates": "local",
+        "go.formatTool": "goimports",
+        "go.lintTool": "golangci-lint",
+        "typescript.preferences.includePackageJsonAutoImports": "on",
+        "typescript.suggest.autoImports": true,
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.organizeImports": "explicit"
+        }
+      }
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "postStartCommand": "docker-compose -f ./docker-compose.yml up -d",
+  "remoteUser": "vscode",
+  "mounts": [
+    "source=${localWorkspaceFolder}/.container-volumes,target=/workspaces/mogi/.container-volumes,type=bind",
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+  ],
+  "forwardPorts": [
+    3000,
+    3001,
+    3002,
+    27117
+  ],
+  "portsAttributes": {
+    "3000": {
+      "label": "API Server",
+      "onAutoForward": "notify"
+    },
+    "3001": {
+      "label": "Scraping Server",
+      "onAutoForward": "notify"
+    },
+    "3002": {
+      "label": "Website",
+      "onAutoForward": "notify"
+    },
+    "27117": {
+      "label": "MongoDB",
+      "onAutoForward": "notify"
+    }
+  }
+}
