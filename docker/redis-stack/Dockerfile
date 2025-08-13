@@ -1,4 +1,4 @@
-FROM redis/redis-stack-server:7.4.5
+FROM redis/redis-stack-server:7.4.0-v6
 
 # Set environment variables for RedisGears
 ENV REDISGEARS_V8_PLUGIN_PATH=/opt/redis-stack/lib/libredisgears_v8_plugin.so
