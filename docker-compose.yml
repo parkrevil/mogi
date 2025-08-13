@@ -16,6 +16,18 @@ services:
     volumes:
       - mogi-dev-mongo-data:/data/db
 
+  redis-stack:
+    build:
+      context: ./docker/redis-stack
+      dockerfile: Dockerfile
+    container_name: mogi-dev-redis-stack
+    ports:
+      - "6470:6379"
+    volumes:
+      - mogi-dev-redis-stack-data:/data
+    environment:
+      REDIS_ARGS: "--requirepass 1234"
+
 volumes:
   mogi-dev-mongo-data:
     driver: local
@@ -23,3 +35,9 @@ volumes:
       type: none
       o: bind
       device: ./.container-volumes/mongo/data
+  mogi-dev-redis-stack-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./.container-volumes/redis-stack/data

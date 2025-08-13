@@ -65,11 +65,15 @@ source ~/.bashrc
 # Create necessary directories
 echo "📁 Creating necessary directories..."
 mkdir -p .container-volumes/mongo/data
+mkdir -p .container-volumes/redis-stack/data
 
 # =============================================================================
 # 3. CONTAINERS SETUP
 # =============================================================================
-# Start containers
+# Build and start containers
+echo "🔨 Building containers..."
+docker-compose -f ./docker-compose.yml build --no-cache
+
 echo "🚀 Starting containers..."
 docker-compose -f ./docker-compose.yml up -d
 
@@ -116,6 +120,14 @@ use mogi
 db.createCollection('mogi')
 "
 echo "✅ MongoDB setup completed!"
+
+# Wait for Redis Stack to be ready
+echo "⏳ Waiting for Redis Stack to be ready..."
+until docker exec mogi-dev-redis-stack redis-cli -h localhost -p 6379 -u mogi:1234 ping > /dev/null 2>&1; do
+  echo "  ⏳ Redis Stack is not ready yet, waiting..."
+  sleep 2
+done
+echo "✅ Redis Stack is ready!"
 
 # =============================================================================
 # 4. DEVELOPMENT TOOLS SETUP
