@@ -104,7 +104,6 @@ Thumbs.db
 *.dylib
 *.test
 *.out
-go.work
 
 # Binaries
 bin/

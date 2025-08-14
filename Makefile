@@ -17,4 +17,5 @@ clean:
 
 install:
 	@echo "Installing dependencies..."
-	go mod tidy
+	cd apps/suction-server && go mod tidy
+	cd apps/suction-client && go mod tidy
