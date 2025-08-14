@@ -1,15 +1,15 @@
-import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { Injectable, OnModuleInit, OnApplicationShutdown } from '@nestjs/common';
 import { RedisClient } from 'bun';
 
 @Injectable()
-export class RedisService implements OnModuleInit, OnModuleDestroy {
+export class RedisService implements OnModuleInit, OnApplicationShutdown {
   constructor(private readonly client: RedisClient) { }
 
   async onModuleInit() {
     await this.connect();
   }
 
-  async onModuleDestroy() {
+  async onApplicationShutdown() {
     this.close();
   }
 

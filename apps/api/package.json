@@ -1,7 +1,7 @@
 {
-  "name": "api-server",
+  "name": "api",
   "scripts": {
-    "dev": "NODE_ENV=local bun --watch --backend=polling run src/main.ts"
+    "dev": "nodemon src/main.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.6",

@@ -1,0 +1,16 @@
+{
+  "execMap": {
+    "ts": "bun"
+  },
+  "watch": [
+    "../../.env.local",
+    "../../packages/bun-shared/**/*",
+    "src/**",
+    "package.json",
+    "tsconfig.json"
+  ],
+  "delay": 500,
+  "env": {
+    "NODE_ENV": "local"
+  }
+}

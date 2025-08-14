@@ -30,13 +30,6 @@ export class RedisModule {
 
             const client = new RedisClient(uri, redisOptions);
 
-            client.onconnect = () => {
-              console.log('Connected to Redis server');
-            };
-            client.onclose = e => {
-              console.error('Disconnected from Redis server:', e);
-            };
-
             RedisModule.clients.set(name, client);
 
             return client;

@@ -1,7 +1,7 @@
 {
-  "name": "scraping-server",
+  "name": "scraper",
   "scripts": {
-    "dev": "NODE_ENV=local bun --hot src/main.ts"
+    "dev": "nodemon src/main.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.6",

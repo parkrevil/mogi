@@ -1,9 +1,10 @@
 import { MongoConfig, RedisConfig, SharedConfig, makeConfigModuleOptions, mongoConfig, redisConfig } from '@mogi/bun-shared/configs';
 import { isLocal } from '@mogi/bun-shared/helpers';
 import { RedisModule } from '@mogi/bun-shared/modules/redis';
-import { Module } from '@nestjs/common';
+import { Module, OnApplicationShutdown } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
+import { InjectConnection, MongooseModule } from '@nestjs/mongoose';
+import type { Connection as MongooseConnection } from 'mongoose';
 import { AppController } from './app.controller';
 import { configs } from './core/configs';
 
@@ -38,4 +39,15 @@ import { configs } from './core/configs';
   ],
   controllers: [AppController],
 })
-export class AppModule { }
+export class AppModule implements OnApplicationShutdown {
+  constructor(@InjectConnection() private readonly mongooseConnection: MongooseConnection) { }
+
+  async onApplicationShutdown() {
+    console.log('Shutting down gracefully...');
+    console.log('Closing Mongoose connection...');
+
+    await this.mongooseConnection.close();
+
+    console.log('Mongoose connection closed');
+  }
+}

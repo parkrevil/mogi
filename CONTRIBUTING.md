@@ -34,8 +34,8 @@ cd mogi
 
 ### 3. 실행
 ```bash
-bun run dev:api-server
-bun run dev:scraping-server
+bun run dev:api
+bun run dev:scraper
 bun run dev:website
 
 make dev-suction-server
@@ -82,10 +82,10 @@ make dev-suction-client
 ### Website
 수집 정보 및 사용자 정보 제공 사이트
 
-### API Server
+### API
 웹사이트를 위한 Backend for Frontend (BFF) REST API 및 WebSocket 서버
 
-### Scraping Server
+### Scraper
 그 곳의 정보를 수집하는 서버
 
 ### Suction Server
@@ -104,7 +104,7 @@ graph LR
     
     subgraph "Backend Services"
         APIServer[🍞 API Server]
-        ScrapingServer[🍞 Scraping Server]
+        Scraper[🍞 Scraping Server]
         SuctionServer[🐹 Suction Server]
     end
 
@@ -126,10 +126,10 @@ graph LR
     SuctionClient -->|가공한 데이터 전송| SuctionServer
     SuctionServer -->|임시 데이터 저장 및<br>완료된 데이터 수신| RedisStack
     SuctionServer -->|완료된 데이터 저장| MongoDB
-    There -->|스크래핑| ScrapingServer
-    ScrapingServer -->|스크랩한 데이터 가공 후 저장| MongoDB
+    There -->|스크래핑| Scraper
+    Scraper -->|스크랩한 데이터 가공 후 저장| MongoDB
     Website <-->|HTTP, WebSocket| APIServer
-    APIServer -->|정보 업데이트 요청, 수신| ScrapingServer
+    APIServer -->|정보 업데이트 요청, 수신| Scraper
     APIServer -->|실시간 데이터| RedisStack
     APIServer -->|영구 데이터| MongoDB
 ```

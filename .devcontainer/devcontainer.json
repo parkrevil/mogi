@@ -56,11 +56,11 @@
   ],
   "portsAttributes": {
     "10000": {
-      "label": "API Server",
+      "label": "API",
       "onAutoForward": "notify"
     },
     "3001": {
-      "label": "Scraping Server",
+      "label": "Scraper",
       "onAutoForward": "notify"
     },
     "3002": {

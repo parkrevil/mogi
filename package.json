@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "apps/api-server",
-    "apps/scraping-server",
+    "apps/api",
+    "apps/scraper",
     "apps/website",
     "packages/bun-shared"
   ],
@@ -25,15 +25,15 @@
   },
   "packageManager": "bun@1.2.0",
   "scripts": {
-    "dev:api-server": "bun run --cwd apps/api-server dev",
-    "dev:scraping-server": "bun run --cwd apps/scraping-server dev",
+    "dev:api": "bun run --cwd apps/api dev",
+    "dev:scraper": "bun run --cwd apps/scraper dev",
     "dev:website": "bun run --cwd apps/website dev",
-    "dev:all": "bun run dev:api-server & bun run dev:scraping-server & bun run dev:website",
     "clean": "rm -rf apps/*/dist apps/*/.next apps/*/node_modules"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "nodemon": "^3.1.10"
   },
   "resolutions": {
     "typescript": "^5.0.0"
