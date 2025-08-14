@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 
 @Controller()
 export class AppController {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) { }
 
   @Get()
   getHello(): string {
@@ -11,7 +11,7 @@ export class AppController {
   }
 
   @Get('health')
-  getHealth() {f
+  getHealth() {
     return {
       status: 'ok',
       service: 'api-server',

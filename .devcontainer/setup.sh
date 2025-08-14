@@ -123,7 +123,7 @@ echo "✅ MongoDB setup completed!"
 
 # Wait for Redis Stack to be ready
 echo "⏳ Waiting for Redis Stack to be ready..."
-until docker exec mogi-dev-redis-stack redis-cli -h localhost -p 6379 -u mogi:1234 ping > /dev/null 2>&1; do
+until docker exec mogi-dev-redis-stack redis-cli -u redis://mogi:1234@localhost:6379 ping > /dev/null 2>&1; do
   echo "  ⏳ Redis Stack is not ready yet, waiting..."
   sleep 2
 done

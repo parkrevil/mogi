@@ -1,3 +1,4 @@
 export enum SharedConfig {
-  MONGO = 'mongo',
+  Mongo = 'mongo',
+  Redis = 'redis',
 }

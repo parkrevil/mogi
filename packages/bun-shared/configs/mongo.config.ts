@@ -1,7 +1,7 @@
 import { registerAs } from '@nestjs/config';
 import { SharedConfig } from './enums';
-import { IMongoConfig } from './interfaces';
+import { MongoConfig } from './interfaces';
 
-export default registerAs<IMongoConfig>(SharedConfig.MONGO, () => ({
+export default registerAs<MongoConfig>(SharedConfig.Mongo, () => ({
   uri: process.env.MONGO_URI!,
 }));

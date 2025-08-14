@@ -1,4 +1,4 @@
-export interface IHttpServerConfig {
+export interface HttpServerConfig {
   host: string;
   port: number;
 }

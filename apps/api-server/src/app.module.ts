@@ -1,18 +1,41 @@
+import { MongoConfig, RedisConfig, SharedConfig, makeConfigModuleOptions, mongoConfig, redisConfig } from '@mogi/bun-shared/configs';
+import { isLocal } from '@mogi/bun-shared/helpers';
+import { RedisModule } from '@mogi/bun-shared/modules/redis';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { configs } from './core/configs';
-import { mongoConfig, makeConfigModuleOptions } from '@mogi/bun-shared/configs';
-import { makeMongoModuleOptions } from '@mogi/bun-shared/providers/mongo';
 
 @Module({
   imports: [
     ConfigModule.forRoot(
-      makeConfigModuleOptions([...configs, mongoConfig])
+      makeConfigModuleOptions([...configs, mongoConfig, redisConfig])
     ),
-    MongooseModule.forRootAsync(makeMongoModuleOptions()),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => {
+        const config = configService.get<MongoConfig>(SharedConfig.Mongo);
+
+        return {
+          uri: config.uri,
+          autoIndex: isLocal(),
+        };
+      },
+      inject: [ConfigService],
+    }),
+    RedisModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => {
+        const config = configService.get<RedisConfig>(SharedConfig.Redis);
+
+        return {
+          uri: config.uri,
+        };
+      },
+      inject: [ConfigService],
+    }),
   ],
   controllers: [AppController],
 })
-export class AppModule {}
+export class AppModule { }

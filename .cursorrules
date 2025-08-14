@@ -38,6 +38,9 @@ Nestjs 프레임워크
 Typescript
 - Barrel Export 파일은 무조건 생성하고 관련된 파일은 무조건 추가한다. 해당 경로의 파일에 접근하는 다른 코드들도 경로를 수정한다.
 - PM2 환경에서 Multi Process 로 실행된다는 점을 고려하여 코드를 작성한다
+- enum 타입의 키는 파스칼 케이스, 값은 문자열인 경우 케밥 케이스로 한다.
+- interface name에 I prefix를 붙이지 않는다.
+- class, interface, enum 의 이름은 대문자 영문으로 시작하며 파스칼 케이스로 한다.
 
 문제해결
 - 질문 혹은 문제에 대한 본질적인 해결법을 찾는다. 편법을 사용하지 않는다. 예를들면 인증이 필요한데 인증 설정이 잘못되어 있다고 인증을 없애는 것은 편법이다.
@@ -45,3 +48,8 @@ Typescript
 - 기능을 제거하거나 비활성화하지 않는다. 모든 기능을 유지하면서 문제를 해결한다
 - 모듈, 라이브러리, 기능을 임의로 제거하지 않는다
 - Dockerfile이 있으면 무조건 사용한다. image로 변경하지 않는다
+
+packages/bun-shared
+- modules 폴더는 각 모듈을 지칭하는 이름의 폴더들로 구성되어 있다.
+- 모듈을 추가할 때 modules/index.ts 는 생성하지 않는다. 이유는 import {...} from bun-shared/modules/some-module 와 같이 사용하기 위함
+- bun-shared 바로 하위의 개별 파일들은 bun-shared/index.ts 배럴 파일에 추가하며 폴더는 추가하지 않는다.

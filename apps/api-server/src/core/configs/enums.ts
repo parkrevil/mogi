@@ -1,4 +1,4 @@
 export enum Config {
-  HTTP_SERVER = 'httpServer',
-  MONGO = 'mongo',
+  HttpServer = 'http-server',
+  Mongo = 'mongo',
 }

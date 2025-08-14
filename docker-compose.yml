@@ -22,7 +22,7 @@ services:
       dockerfile: Dockerfile
     container_name: mogi-dev-redis-stack
     ports:
-      - "6470:6379"
+      - "6479:6379"
     volumes:
       - mogi-dev-redis-stack-data:/data
     environment:

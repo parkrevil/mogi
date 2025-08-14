@@ -1,5 +1,6 @@
-export { default as mongoConfig } from './mongo.config';
-
 export * from './enums';
-export * from './interfaces';
 export * from './helpers';
+export * from './interfaces';
+export { default as mongoConfig } from './mongo.config';
+export { default as redisConfig } from './redis.config';
+
