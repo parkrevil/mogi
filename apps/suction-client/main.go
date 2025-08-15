@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
+	"go-shared/common"
 )
 
 func main() {
-	fmt.Println("Hello World from Suction Client!")
+	app := common.NewApp()
+	app.Run()
 }

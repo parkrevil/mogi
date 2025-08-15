@@ -1,21 +1,20 @@
 # Development commands
-.PHONY: dev-suction-server dev-suction-client
+.PHONY: dev-server dev-client
 
 # Go services
-dev-suction-server:
-	go run apps/suction-server/main.go
+dev-server:
+	cd apps/suction-server && air
 
-dev-suction-client:
-	go run apps/suction-client/main.go
+dev-client:
+	cd apps/suction-client && air
 
 # Utility commands
 .PHONY: clean install
 
 clean:
 	@echo "Cleaning builds..."
-	rm -rf apps/*/bin/
+	rm -rf apps/{suction-client,suction-server}/{bin,tmp}
 
 install:
 	@echo "Installing dependencies..."
-	cd apps/suction-server && go mod tidy
-	cd apps/suction-client && go mod tidy
+	go work sync

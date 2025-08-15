@@ -3,4 +3,5 @@ go 1.25.0
 use (
 	./apps/suction-client
 	./apps/suction-server
+	./packages/go-shared/common
 )

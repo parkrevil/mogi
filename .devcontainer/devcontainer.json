@@ -47,7 +47,8 @@
   "remoteUser": "vscode",
   "mounts": [
     "source=${localWorkspaceFolder}/.container-volumes,target=/workspaces/mogi/.container-volumes,type=bind",
-    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind"
   ],
   "forwardPorts": [
     10000,

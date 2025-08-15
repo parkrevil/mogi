@@ -130,7 +130,21 @@ done
 echo "✅ Redis Stack is ready!"
 
 # =============================================================================
-# 4. DEVELOPMENT TOOLS SETUP
+# 4. GIT SETUP
+# =============================================================================
+echo "🔧 Setting up Git configuration..."
+
+# Verify git configuration
+if [ -f ~/.gitconfig ]; then
+    echo "✅ Git configuration found"
+    echo "👤 Git user: $(git config user.name)"
+    echo "📧 Git email: $(git config user.email)"
+else
+    echo "⚠️  Git configuration not found. Please ensure ~/.gitconfig is mounted from host"
+fi
+
+# =============================================================================
+# 5. DEVELOPMENT TOOLS SETUP
 # =============================================================================
 echo "🔧 Setting up development tools..."
 
@@ -148,7 +162,7 @@ go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.64.8
 go install github.com/air-verse/air@v1.62.0
 
 # =============================================================================
-# 5. PROJECT DEPENDENCIES
+# 6. PROJECT DEPENDENCIES
 # =============================================================================
 echo "📚 Installing project dependencies..."
 
@@ -164,11 +178,10 @@ bun install
 
 # Install Go dependencies
 echo "📦 Installing Go dependencies..."
-go mod download
-go mod tidy
+go work sync
 
 # =============================================================================
-# COMPLETION
+# 7. COMPLETION
 # =============================================================================
 echo ""
 echo "🎉 Mogi Development Environment setup completed!"
