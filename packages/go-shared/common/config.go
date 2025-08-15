@@ -18,18 +18,18 @@ const (
 )
 
 type Config struct {
-	Env                                  Environment
-	ServerHost                           string
-	ServerPort                           int
-	ServerStreamBufferSize               int
-	ServerMaxIdleTimeout                 int64
-	ServerKeepAlivePeriod                int64
-	ServerMaxIncomingStreams             int64
-	ServerMaxIncomingUniStreams          int64
-	ServerInitialStreamReceiveWindow     uint64
-	ServerMaxStreamReceiveWindow         uint64
-	ServerInitialConnectionReceiveWindow uint64
-	ServerMaxConnectionReceiveWindow     uint64
+	Env                                      Environment
+	QuicMaxIdleTimeout                       int64
+	QuicKeepAlivePeriod                      int64
+	QuicServerListeningAddress               string
+	QuicServerStreamBufferSize               int
+	QuicServerMaxIncomingStreams             int64
+	QuicServerMaxIncomingUniStreams          int64
+	QuicServerInitialStreamReceiveWindow     uint64
+	QuicServerMaxStreamReceiveWindow         uint64
+	QuicServerInitialConnectionReceiveWindow uint64
+	QuicServerMaxConnectionReceiveWindow     uint64
+	QuicClientConnectionAddress              string
 }
 
 func NewConfig(logger *zap.Logger) (*Config, error) {
@@ -49,75 +49,83 @@ func NewConfig(logger *zap.Logger) (*Config, error) {
 		}
 	}
 
-	serverHost, err := validateAndGetEnv("SUCTION_SERVER_HOST", "string")
+	quicMaxIdleTimeout, err := validateAndGetEnv("SUCTION_QUIC_MAX_IDLE_TIMEOUT", "int64")
 	if err != nil {
 		return nil, err
 	}
 
-	serverPort, err := validateAndGetEnv("SUCTION_SERVER_PORT", "int")
+	quicKeepAlivePeriod, err := validateAndGetEnv("SUCTION_QUIC_KEEP_ALIVE_PERIOD", "int64")
 	if err != nil {
 		return nil, err
 	}
 
-	serverStreamBufferSize, err := validateAndGetEnv("SUCTION_SERVER_STREAM_BUFFER_SIZE", "int")
+	quicServerListeningAddress, err := validateAndGetEnv("SUCTION_QUIC_SERVER_LISTENING_ADDRESS", "string")
 	if err != nil {
 		return nil, err
 	}
 
-	serverMaxIdleTimeout, err := validateAndGetEnv("SUCTION_SERVER_MAX_IDLE_TIMEOUT", "int64")
+	quicServerStreamBufferSize, err := validateAndGetEnv("SUCTION_QUIC_SERVER_STREAM_BUFFER_SIZE", "int")
 	if err != nil {
 		return nil, err
 	}
 
-	serverKeepAlivePeriod, err := validateAndGetEnv("SUCTION_SERVER_KEEP_ALIVE_PERIOD", "int64")
+	quicServerMaxIncomingStreams, err := validateAndGetEnv("SUCTION_QUIC_SERVER_MAX_INCOMING_STREAMS", "int64")
 	if err != nil {
 		return nil, err
 	}
 
-	serverMaxIncomingStreams, err := validateAndGetEnv("SUCTION_SERVER_MAX_INCOMING_STREAMS", "int64")
+	quicServerMaxIncomingUniStreams, err := validateAndGetEnv("SUCTION_QUIC_SERVER_MAX_INCOMING_UNI_STREAMS", "int64")
 	if err != nil {
 		return nil, err
 	}
 
-	serverMaxIncomingUniStreams, err := validateAndGetEnv("SUCTION_SERVER_MAX_INCOMING_UNI_STREAMS", "int64")
+	quicServerInitialStreamReceiveWindow, err := validateAndGetEnv("SUCTION_QUIC_SERVER_INITIAL_STREAM_RECEIVE_WINDOW", "uint64")
 	if err != nil {
 		return nil, err
 	}
 
-	serverInitialStreamReceiveWindow, err := validateAndGetEnv("SUCTION_SERVER_INITIAL_STREAM_RECEIVE_WINDOW", "uint64")
+	quicServerMaxStreamReceiveWindow, err := validateAndGetEnv("SUCTION_QUIC_SERVER_MAX_STREAM_RECEIVE_WINDOW", "uint64")
 	if err != nil {
 		return nil, err
 	}
 
-	serverMaxStreamReceiveWindow, err := validateAndGetEnv("SUCTION_SERVER_MAX_STREAM_RECEIVE_WINDOW", "uint64")
+	quicServerInitialConnectionReceiveWindow, err := validateAndGetEnv("SUCTION_QUIC_SERVER_INITIAL_CONNECTION_RECEIVE_WINDOW", "uint64")
 	if err != nil {
 		return nil, err
 	}
 
-	serverInitialConnectionReceiveWindow, err := validateAndGetEnv("SUCTION_SERVER_INITIAL_CONNECTION_RECEIVE_WINDOW", "uint64")
+	quicServerMaxConnectionReceiveWindow, err := validateAndGetEnv("SUCTION_QUIC_SERVER_MAX_CONNECTION_RECEIVE_WINDOW", "uint64")
 	if err != nil {
 		return nil, err
 	}
 
-	serverMaxConnectionReceiveWindow, err := validateAndGetEnv("SUCTION_SERVER_MAX_CONNECTION_RECEIVE_WINDOW", "uint64")
+	quicClientConnectionAddress, err := validateAndGetEnv("SUCTION_QUIC_CLIENT_CONNECTION_ADDRESS", "string")
 	if err != nil {
 		return nil, err
 	}
 
 	return &Config{
-		Env:                                  env,
-		ServerHost:                           serverHost.(string),
-		ServerPort:                           serverPort.(int),
-		ServerStreamBufferSize:               serverStreamBufferSize.(int),
-		ServerMaxIdleTimeout:                 serverMaxIdleTimeout.(int64),
-		ServerKeepAlivePeriod:                serverKeepAlivePeriod.(int64),
-		ServerMaxIncomingStreams:             serverMaxIncomingStreams.(int64),
-		ServerMaxIncomingUniStreams:          serverMaxIncomingUniStreams.(int64),
-		ServerInitialStreamReceiveWindow:     serverInitialStreamReceiveWindow.(uint64),
-		ServerMaxStreamReceiveWindow:         serverMaxStreamReceiveWindow.(uint64),
-		ServerInitialConnectionReceiveWindow: serverInitialConnectionReceiveWindow.(uint64),
-		ServerMaxConnectionReceiveWindow:     serverMaxConnectionReceiveWindow.(uint64),
+		Env:                                      env,
+		QuicMaxIdleTimeout:                       quicMaxIdleTimeout.(int64),
+		QuicKeepAlivePeriod:                      quicKeepAlivePeriod.(int64),
+		QuicServerListeningAddress:               quicServerListeningAddress.(string),
+		QuicServerStreamBufferSize:               quicServerStreamBufferSize.(int),
+		QuicServerMaxIncomingStreams:             quicServerMaxIncomingStreams.(int64),
+		QuicServerMaxIncomingUniStreams:          quicServerMaxIncomingUniStreams.(int64),
+		QuicServerInitialStreamReceiveWindow:     quicServerInitialStreamReceiveWindow.(uint64),
+		QuicServerMaxStreamReceiveWindow:         quicServerMaxStreamReceiveWindow.(uint64),
+		QuicServerInitialConnectionReceiveWindow: quicServerInitialConnectionReceiveWindow.(uint64),
+		QuicServerMaxConnectionReceiveWindow:     quicServerMaxConnectionReceiveWindow.(uint64),
+		QuicClientConnectionAddress:              quicClientConnectionAddress.(string),
 	}, nil
+}
+
+func (c *Config) IsLocal() bool {
+	return c.Env == Local
+}
+
+func (c *Config) IsProduction() bool {
+	return c.Env == Production
 }
 
 func validateAndGetEnv(key string, valType string) (interface{}, error) {

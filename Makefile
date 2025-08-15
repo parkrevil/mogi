@@ -3,10 +3,10 @@
 
 # Go services
 dev-server:
-	cd apps/suction-server && air
+	cd apps/suction-server && bunx nodemon
 
 dev-client:
-	cd apps/suction-client && air
+	cd apps/suction-client && bunx nodemon
 
 # Utility commands
 .PHONY: clean install

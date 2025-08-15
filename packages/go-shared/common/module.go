@@ -5,5 +5,5 @@ import (
 )
 
 var Module = fx.Options(
-	fx.Provide(NewConfig, NewLogger),
+	fx.Provide(NewConfig, NewLogger, NewTLSConfig),
 )

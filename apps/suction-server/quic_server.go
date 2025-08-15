@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"crypto/tls"
 	"errors"
 	"fmt"
 	"io"
@@ -22,25 +21,19 @@ type QuicServer struct {
 	BufferSize int
 }
 
-func NewQuicServer(logger *zap.Logger, config *common.Config, lifecycle fx.Lifecycle) (*QuicServer, error) {
-	addr := fmt.Sprintf("%s:%d", config.ServerHost, config.ServerPort)
+func NewQuicServer(logger *zap.Logger, config *common.Config, tls *common.Tls, lifecycle fx.Lifecycle) (*QuicServer, error) {
 	quicConfig := &quic.Config{
-		MaxIdleTimeout:                 time.Duration(config.ServerMaxIdleTimeout) * time.Second,
-		KeepAlivePeriod:                time.Duration(config.ServerKeepAlivePeriod) * time.Second,
-		MaxIncomingStreams:             config.ServerMaxIncomingStreams,
-		MaxIncomingUniStreams:          config.ServerMaxIncomingUniStreams,
-		InitialStreamReceiveWindow:     config.ServerInitialStreamReceiveWindow * 1024 * 1024,     // 스트림 당 초기 버퍼(n MB)
-		MaxStreamReceiveWindow:         config.ServerMaxStreamReceiveWindow * 1024 * 1024,         // 스트림 당 최대 버퍼(n MB)
-		InitialConnectionReceiveWindow: config.ServerInitialConnectionReceiveWindow * 1024 * 1024, // 연결 당 초기 버퍼(n MB)
-		MaxConnectionReceiveWindow:     config.ServerMaxConnectionReceiveWindow * 1024 * 1024,     // 연결 당 최대 버퍼(n MB)
+		MaxIdleTimeout:                 time.Duration(config.QuicMaxIdleTimeout) * time.Second,
+		KeepAlivePeriod:                time.Duration(config.QuicKeepAlivePeriod) * time.Second,
+		MaxIncomingStreams:             config.QuicServerMaxIncomingStreams,
+		MaxIncomingUniStreams:          config.QuicServerMaxIncomingUniStreams,
+		InitialStreamReceiveWindow:     config.QuicServerInitialStreamReceiveWindow * 1024 * 1024,     // 스트림 당 초기 버퍼(n MB)
+		MaxStreamReceiveWindow:         config.QuicServerMaxStreamReceiveWindow * 1024 * 1024,         // 스트림 당 최대 버퍼(n MB)
+		InitialConnectionReceiveWindow: config.QuicServerInitialConnectionReceiveWindow * 1024 * 1024, // 연결 당 초기 버퍼(n MB)
+		MaxConnectionReceiveWindow:     config.QuicServerMaxConnectionReceiveWindow * 1024 * 1024,     // 연결 당 최대 버퍼(n MB)
 	}
 
-	tlsConfig, err := loadTLSConfig()
-	if err != nil {
-		return nil, errors.New("Failed to get TLS config: " + err.Error())
-	}
-
-	listener, err := quic.ListenAddr(addr, tlsConfig, quicConfig)
+	listener, err := quic.ListenAddr(config.QuicServerListeningAddress, tls.Config, quicConfig)
 	if err != nil {
 		return nil, errors.New("Failed to start QUIC server: " + err.Error())
 	}
@@ -48,14 +41,14 @@ func NewQuicServer(logger *zap.Logger, config *common.Config, lifecycle fx.Lifec
 	server := &QuicServer{
 		listener:   listener,
 		logger:     logger,
-		BufferSize: config.ServerStreamBufferSize,
+		BufferSize: config.QuicServerStreamBufferSize,
 	}
 
 	var cancel context.CancelFunc
 
 	lifecycle.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
-			logger.Info("Starting QUIC server", zap.String("address", addr))
+			logger.Info("Starting QUIC server", zap.String("address", config.QuicServerListeningAddress))
 
 			quicCtx, c := context.WithCancel(context.Background())
 			cancel = c
@@ -78,25 +71,13 @@ func NewQuicServer(logger *zap.Logger, config *common.Config, lifecycle fx.Lifec
 	return server, nil
 }
 
-func loadTLSConfig() (*tls.Config, error) {
-	tlsCert, err := tls.LoadX509KeyPair("../../samples/server.crt", "../../samples/server.key")
-	if err != nil {
-		return nil, err
-	}
-
-	return &tls.Config{
-		Certificates: []tls.Certificate{tlsCert},
-		NextProtos:   []string{"quic-example"},
-	}, nil
-}
-
 func (qs *QuicServer) acceptConnections(ctx context.Context) {
 	for {
 		conn, err := qs.listener.Accept(ctx)
 
 		if err != nil {
-			if errors.Is(err, net.ErrClosed) {
-				qs.logger.Info("QUIC listener closed, stopping acceptConnections loop")
+			if errors.Is(err, net.ErrClosed) || errors.Is(err, context.Canceled) {
+				qs.logger.Info("QUIC listener closed", zap.Error(err))
 
 				return
 			}
