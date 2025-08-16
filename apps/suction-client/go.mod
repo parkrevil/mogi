@@ -4,6 +4,7 @@ go 1.25.0
 
 require (
 	github.com/cenkalti/backoff/v5 v5.0.3
+	github.com/golang/snappy v1.0.0
 	github.com/quic-go/quic-go v0.54.0
 	go-shared/common v0.0.0
 	go-shared/pb v0.0.0

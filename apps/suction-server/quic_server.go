@@ -11,6 +11,7 @@ import (
 	"go-shared/common"
 	"go-shared/pb"
 
+	"github.com/golang/snappy"
 	"github.com/quic-go/quic-go"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
@@ -136,30 +137,69 @@ func (qs *QuicServer) handleStream(stream *quic.Stream) {
 			return
 		}
 
-		data := buffer[:n]
+		compressedData := buffer[:n]
 		
+		// TODO: Snappy Decompression Testing Requirements
+		// 1. Decompression Performance Testing:
+		//    - Measure decompression time for different data sizes
+		//    - Test with various compression ratios
+		//    - Monitor memory usage during decompression
+		//    - Test CPU usage patterns during decompression
+		//
+		// 2. Error Handling Testing:
+		//    - Test with corrupted compressed data
+		//    - Test with incomplete compressed data
+		//    - Test memory exhaustion during decompression
+		//    - Test with malformed protobuf data after decompression
+		//
+		// 3. Concurrent Processing Testing:
+		//    - Test multiple concurrent decompression operations
+		//    - Test memory usage under high load
+		//    - Test performance degradation with multiple streams
+		//
+		// 4. Monitoring and Metrics:
+		//    - Track decompression success/failure rates
+		//    - Monitor average decompression time
+		//    - Track compression ratio statistics
+		//    - Monitor memory usage patterns
+		//
+		// 5. Optimization Opportunities:
+		//    - Implement decompression buffer pooling
+		//    - Test different buffer sizes for optimal performance
+		//    - Consider async decompression for large data
+		//    - Implement decompression timeout handling
+		
+		// Decompress data with snappy
+		decompressedData, err := snappy.Decode(nil, compressedData)
+		if err != nil {
+			qs.logger.Error("Failed to decompress snappy data", zap.Error(err))
+			continue
+		}
+
 		// Unmarshal protobuf message
 		var clientData pb.ClientData
-		if err := proto.Unmarshal(data, &clientData); err != nil {
+		if err := proto.Unmarshal(decompressedData, &clientData); err != nil {
 			qs.logger.Error("Failed to unmarshal protobuf message", zap.Error(err))
 			continue
 		}
 
-		qs.logger.Info("Received protobuf message from client",
+		// Calculate compression statistics
+		compressionRatio := float64(len(compressedData)) / float64(len(decompressedData)) * 100
+		sizeReduction := len(decompressedData) - len(compressedData)
+
+		qs.logger.Info("Received snappy compressed protobuf message",
 			zap.Int64("timestamp", clientData.Timestamp),
-			zap.String("message", clientData.Message),
+			zap.Int("message_length", len(clientData.Message)),
 			zap.Int("sensor_readings_count", len(clientData.SensorReadings)),
+			zap.Int("original_size", len(decompressedData)),
+			zap.Int("compressed_size", len(compressedData)),
+			zap.Float64("compression_ratio_percent", compressionRatio),
+			zap.Int("size_reduction_bytes", sizeReduction),
 			zap.Uint64("stream_id", uint64(stream.StreamID())))
 
-		// Process sensor readings
-		if len(clientData.SensorReadings) > 0 {
-			qs.logger.Info("Processing sensor readings", 
-				zap.Float32s("readings", clientData.SensorReadings))
-		}
-
 		// Send response back to client
-		response := fmt.Sprintf("Server received: %s (timestamp: %d, sensors: %d)", 
-			clientData.Message, clientData.Timestamp, len(clientData.SensorReadings))
+		response := fmt.Sprintf("Server received compressed protobuf (original: %d bytes, compressed: %d bytes, ratio: %.1f%%)", 
+			len(decompressedData), len(compressedData), compressionRatio)
 		_, err = stream.Write([]byte(response))
 		if err != nil {
 			qs.logger.Error("Failed to write to stream", zap.Error(err))

@@ -159,27 +159,6 @@ source ~/.bashrc
 
 # Install Go tools
 echo "🐹 Installing Go tools..."
-# Golang 1.25.0 설치 (공식 문서 참고)
-echo "🐹 Installing Go v1.25.0..."
-GO_VERSION=1.25.0
-ARCH=$(uname -m)
-if [ "$ARCH" = "x86_64" ]; then
-  ARCH=amd64
-elif [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
-  ARCH=arm64
-else
-  echo "Unsupported architecture: $ARCH"
-  exit 1
-fi
-wget -q https://go.dev/dl/go${GO_VERSION}.linux-${ARCH}.tar.gz -O /tmp/go${GO_VERSION}.linux-${ARCH}.tar.gz
-sudo rm -rf /usr/local/go
-sudo tar -C /usr/local -xzf /tmp/go${GO_VERSION}.linux-${ARCH}.tar.gz
-export PATH="/usr/local/go/bin:$PATH"
-echo 'export PATH="/usr/local/go/bin:$PATH"' >> ~/.bashrc
-echo 'export PATH="$(go env GOPATH)/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
-go version
-go install golang.org/x/tools/cmd/goimports@v0.36.0
 go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.7
 
 # =============================================================================

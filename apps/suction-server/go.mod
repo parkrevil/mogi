@@ -3,12 +3,13 @@ module suction-server
 go 1.25.0
 
 require (
+	github.com/golang/snappy v1.0.0
 	github.com/quic-go/quic-go v0.54.0
 	go-shared/common v0.0.0
 	go-shared/pb v0.0.0
 	go.uber.org/fx v1.24.0
 	go.uber.org/zap v1.27.0
-	google.golang.org/protobuf v1.33.0
+	google.golang.org/protobuf v1.36.7
 )
 
 require (

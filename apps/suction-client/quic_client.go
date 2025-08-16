@@ -3,12 +3,14 @@ package main
 import (
 	"context"
 	"errors"
+	"math/rand"
 	"time"
 
 	"go-shared/common"
 	"go-shared/pb"
 
 	"github.com/cenkalti/backoff/v5"
+	"github.com/golang/snappy"
 	"github.com/quic-go/quic-go"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
@@ -120,7 +122,7 @@ func (qc *QuicClient) handleConnection(ctx context.Context) error {
 	}
 	defer stream.Close()
 
-	ticker := time.NewTicker(5 * time.Second)
+	ticker := time.NewTicker(1 * time.Second)
 	defer ticker.Stop()
 
 	for {
@@ -130,30 +132,77 @@ func (qc *QuicClient) handleConnection(ctx context.Context) error {
 				zap.String("reason", ctx.Err().Error()))
 			return ctx.Err()
 		case <-ticker.C:
-			// Create protobuf message with sensor data
-			clientData := &pb.ClientData{
-				Timestamp:      time.Now().Unix(),
-				Message:        "Hello, QUIC server! Message",
-				SensorReadings: []float32{23.5, 45.2, 67.8, 89.1}, // Example sensor readings
+			// Generate simple test data
+			sensorReadings := make([]float32, 1000) // 1000 sensor readings
+			for i := 0; i < 1000; i++ {
+				sensorReadings[i] = rand.Float32() * 100.0
 			}
 			
-			data, err := proto.Marshal(clientData)
+			// Create protobuf message with simple data
+			clientData := &pb.ClientData{
+				Timestamp:      time.Now().Unix(),
+				Message:        "Test message from client",
+				SensorReadings: sensorReadings,
+			}
+			
+			// Marshal to protobuf
+			protobufData, err := proto.Marshal(clientData)
 			if err != nil {
 				qc.logger.Error("Failed to marshal protobuf message", zap.Error(err))
 				return err
 			}
 
-			_, err = stream.Write(data)
+			// TODO: Snappy Compression Testing Requirements
+			// 1. Data Size Testing:
+			//    - Test with 1KB, 5KB, 10KB, 20KB, 50KB, 100KB data sizes
+			//    - Compare compression ratios for different data volumes
+			//    - Find optimal data size threshold for compression
+			//
+			// 2. Data Pattern Testing:
+			//    - Test with repetitive data patterns (e.g., constant sensor values)
+			//    - Test with random data patterns (current implementation)
+			//    - Test with real sensor data patterns (temperature, humidity, pressure)
+			//    - Test with structured data patterns
+			//
+			// 3. Performance Testing:
+			//    - Measure compression time for different data sizes
+			//    - Measure decompression time on server side
+			//    - Monitor memory usage during compression/decompression
+			//    - Test CPU usage patterns
+			//
+			// 4. Network Performance Testing:
+			//    - Compare transmission time with/without compression
+			//    - Measure bandwidth usage reduction
+			//    - Test latency impact of compression
+			//
+			// 5. Error Handling Testing:
+			//    - Test with corrupted compressed data
+			//    - Test memory exhaustion scenarios
+			//    - Test network error handling
+			//
+			// 6. Optimization Opportunities:
+			//    - Implement conditional compression (only compress if beneficial)
+			//    - Compare with other compression algorithms (gzip, lz4)
+			//    - Test different compression levels
+			//    - Implement adaptive compression based on data characteristics
+			
+			// Compress data with snappy
+			compressedData := snappy.Encode(nil, protobufData)
+			compressionRatio := float64(len(compressedData)) / float64(len(protobufData)) * 100
+
+			_, err = stream.Write(compressedData)
 			if err != nil {
 				qc.logger.Error("Failed to write to stream", zap.Error(err))
 
 				return err
 			}
 
-			qc.logger.Info("Sent protobuf message to server", 
-				zap.Int64("timestamp", clientData.Timestamp),
-				zap.String("message", clientData.Message),
-				zap.Int("sensor_readings_count", len(clientData.SensorReadings)))
+			qc.logger.Info("Snappy compressed protobuf transmission", 
+				zap.Int("sensor_count", len(sensorReadings)),
+				zap.Int("protobuf_size", len(protobufData)),
+				zap.Int("compressed_size", len(compressedData)),
+				zap.Float64("compression_ratio_percent", compressionRatio),
+				zap.Int("size_reduction_bytes", len(protobufData)-len(compressedData)))
 		}
 	}
 }

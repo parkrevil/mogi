@@ -9,7 +9,10 @@
   ],
   "initializeCommand": "sudo chown -R 1000:1000 ${localWorkspaceFolder} && sudo chmod -R 755 ${localWorkspaceFolder}",
   "features": {
-    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+    "ghcr.io/devcontainers/features/golang:1": {
+      "version": "1.25.0"
+    }
   },
   "customizations": {
     "vscode": {
