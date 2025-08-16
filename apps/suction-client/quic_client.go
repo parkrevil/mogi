@@ -6,11 +6,13 @@ import (
 	"time"
 
 	"go-shared/common"
+	"go-shared/pb"
 
 	"github.com/cenkalti/backoff/v5"
 	"github.com/quic-go/quic-go"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
+	"google.golang.org/protobuf/proto"
 )
 
 type QuicClient struct {
@@ -128,14 +130,30 @@ func (qc *QuicClient) handleConnection(ctx context.Context) error {
 				zap.String("reason", ctx.Err().Error()))
 			return ctx.Err()
 		case <-ticker.C:
-			_, err := stream.Write([]byte("Hello, QUIC server! Message"))
+			// Create protobuf message with sensor data
+			clientData := &pb.ClientData{
+				Timestamp:      time.Now().Unix(),
+				Message:        "Hello, QUIC server! Message",
+				SensorReadings: []float32{23.5, 45.2, 67.8, 89.1}, // Example sensor readings
+			}
+			
+			data, err := proto.Marshal(clientData)
+			if err != nil {
+				qc.logger.Error("Failed to marshal protobuf message", zap.Error(err))
+				return err
+			}
+
+			_, err = stream.Write(data)
 			if err != nil {
 				qc.logger.Error("Failed to write to stream", zap.Error(err))
 
 				return err
 			}
 
-			qc.logger.Info("Sent message to server")
+			qc.logger.Info("Sent protobuf message to server", 
+				zap.Int64("timestamp", clientData.Timestamp),
+				zap.String("message", clientData.Message),
+				zap.Int("sensor_readings_count", len(clientData.SensorReadings)))
 		}
 	}
 }

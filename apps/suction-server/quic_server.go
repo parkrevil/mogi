@@ -9,10 +9,12 @@ import (
 	"time"
 
 	"go-shared/common"
+	"go-shared/pb"
 
 	"github.com/quic-go/quic-go"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
+	"google.golang.org/protobuf/proto"
 )
 
 type QuicServer struct {
@@ -135,11 +137,29 @@ func (qs *QuicServer) handleStream(stream *quic.Stream) {
 		}
 
 		data := buffer[:n]
-		qs.logger.Debug("Received data from stream",
-			zap.String("data", string(data)),
+		
+		// Unmarshal protobuf message
+		var clientData pb.ClientData
+		if err := proto.Unmarshal(data, &clientData); err != nil {
+			qs.logger.Error("Failed to unmarshal protobuf message", zap.Error(err))
+			continue
+		}
+
+		qs.logger.Info("Received protobuf message from client",
+			zap.Int64("timestamp", clientData.Timestamp),
+			zap.String("message", clientData.Message),
+			zap.Int("sensor_readings_count", len(clientData.SensorReadings)),
 			zap.Uint64("stream_id", uint64(stream.StreamID())))
 
-		response := fmt.Sprintf("Echo: %s", string(data))
+		// Process sensor readings
+		if len(clientData.SensorReadings) > 0 {
+			qs.logger.Info("Processing sensor readings", 
+				zap.Float32s("readings", clientData.SensorReadings))
+		}
+
+		// Send response back to client
+		response := fmt.Sprintf("Server received: %s (timestamp: %d, sensors: %d)", 
+			clientData.Message, clientData.Timestamp, len(clientData.SensorReadings))
 		_, err = stream.Write([]byte(response))
 		if err != nil {
 			qs.logger.Error("Failed to write to stream", zap.Error(err))

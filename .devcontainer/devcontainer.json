@@ -9,23 +9,11 @@
   ],
   "initializeCommand": "sudo chown -R 1000:1000 ${localWorkspaceFolder} && sudo chmod -R 755 ${localWorkspaceFolder}",
   "features": {
-    "ghcr.io/devcontainers/features/go:1": {
-      "version": "1.25"
-    },
-    "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
   },
   "customizations": {
     "vscode": {
-      "extensions": [
-        "golang.go",
-        "bradlc.vscode-tailwindcss",
-        "esbenp.prettier-vscode",
-        "ms-vscode.vscode-typescript-next",
-        "ms-vscode.vscode-json",
-        "redhat.vscode-yaml",
-        "ms-azuretools.vscode-docker"
-      ],
+      "extensions": [],
       "settings": {
         "go.useLanguageServer": true,
         "go.gopath": "/go",
@@ -50,6 +38,9 @@
     "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
     "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind"
   ],
+  "remoteEnv": {
+    "PATH": "${containerEnv:PATH}:/go/bin"
+  },
   "forwardPorts": [
     10000,
     10001,

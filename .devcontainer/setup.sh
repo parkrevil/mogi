@@ -19,7 +19,11 @@ sudo apt-get install -y -qq \
     htop \
     tree \
     jq \
-    unzip
+    unzip \
+    protobuf-compiler
+
+echo "📦 Upgrading system packages..."
+sudo apt-get upgrade -qq
 
 # =============================================================================
 # 2. DOCKER SETUP
@@ -29,9 +33,7 @@ echo "🐳 Setting up Docker environment..."
 # Check if Docker is available
 echo "🐳 Checking Docker availability..."
 if ! command -v docker &> /dev/null; then
-    echo "❌ Docker not found. Please install Docker Desktop from:"
-    echo "   https://www.docker.com/products/docker-desktop"
-    echo "   Then restart your Dev Container."
+    echo "❌ Docker not found."
     exit 1
 fi
 
@@ -64,18 +66,18 @@ source ~/.bashrc
 
 # Create necessary directories
 echo "📁 Creating necessary directories..."
-mkdir -p .container-volumes/mongo/data
-mkdir -p .container-volumes/redis-stack/data
+mkdir -p ./.container-volumes/mongo/data
+mkdir -p ./.container-volumes/redis-stack/data
 
 # =============================================================================
 # 3. CONTAINERS SETUP
 # =============================================================================
 # Build and start containers
 echo "🔨 Building containers..."
-docker-compose -f ./docker-compose.yml build --no-cache
+docker compose -f ./docker-compose.yml build --no-cache
 
 echo "🚀 Starting containers..."
-docker-compose -f ./docker-compose.yml up -d
+docker compose -f ./docker-compose.yml up -d
 
 # Wait for MongoDB to be ready
 echo "⏳ Waiting for MongoDB to be ready..."
@@ -157,9 +159,28 @@ source ~/.bashrc
 
 # Install Go tools
 echo "🐹 Installing Go tools..."
+# Golang 1.25.0 설치 (공식 문서 참고)
+echo "🐹 Installing Go v1.25.0..."
+GO_VERSION=1.25.0
+ARCH=$(uname -m)
+if [ "$ARCH" = "x86_64" ]; then
+  ARCH=amd64
+elif [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
+  ARCH=arm64
+else
+  echo "Unsupported architecture: $ARCH"
+  exit 1
+fi
+wget -q https://go.dev/dl/go${GO_VERSION}.linux-${ARCH}.tar.gz -O /tmp/go${GO_VERSION}.linux-${ARCH}.tar.gz
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf /tmp/go${GO_VERSION}.linux-${ARCH}.tar.gz
+export PATH="/usr/local/go/bin:$PATH"
+echo 'export PATH="/usr/local/go/bin:$PATH"' >> ~/.bashrc
+echo 'export PATH="$(go env GOPATH)/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+go version
 go install golang.org/x/tools/cmd/goimports@v0.36.0
-go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.64.8
-go install github.com/air-verse/air@v1.62.0
+go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.7
 
 # =============================================================================
 # 6. PROJECT DEPENDENCIES

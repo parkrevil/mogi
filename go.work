@@ -4,4 +4,5 @@ use (
 	./apps/suction-client
 	./apps/suction-server
 	./packages/go-shared/common
+	./packages/go-shared/pb
 )
