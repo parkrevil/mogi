@@ -52,8 +52,8 @@ Golang
 - 패키지 설치, 삭제 시 프로젝트 루트에서 make install 을 실행한다.
 
 Protocol Buffer
-- proto 파일은 packages/go-shared/protos/ 디렉토리에 위치한다.
-- 컴파일된 Go 파일은 packages/go-shared/pb/ 디렉토리에 생성한다.
+- proto 파일은 packages/go/protos/ 디렉토리에 위치한다.
+- 컴파일된 Go 파일은 packages/go/pb/ 디렉토리에 생성한다.
 - proto 파일의 package 이름은 소문자로 작성한다.
 - go_package 옵션은 "./pb;패키지명" 형식으로 작성한다.
 - 컴파일된 파일은 .gitignore에 추가하지 않고 버전 관리에 포함한다.
@@ -65,7 +65,7 @@ Protocol Buffer
 - 모듈, 라이브러리, 기능을 임의로 제거하지 않는다
 - Dockerfile이 있으면 무조건 사용한다. image로 변경하지 않는다
 
-packages/bun-shared
+packages/bun
 - modules 폴더는 각 모듈을 지칭하는 이름의 폴더들로 구성되어 있다.
-- 모듈을 추가할 때 modules/index.ts 는 생성하지 않는다. 이유는 import {...} from bun-shared/modules/some-module 와 같이 사용하기 위함
-- bun-shared 바로 하위의 개별 파일들은 bun-shared/index.ts 배럴 파일에 추가하며 폴더는 추가하지 않는다.
+- 모듈을 추가할 때 modules/index.ts 는 생성하지 않는다. 이유는 import {...} from packages/bun/modules/some-module 와 같이 사용하기 위함
+- packages/bun 바로 하위의 개별 파일들은 packages/bun/index.ts 배럴 파일에 추가하며 폴더는 추가하지 않는다.

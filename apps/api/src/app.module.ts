@@ -1,6 +1,6 @@
-import { MongoConfig, RedisConfig, SharedConfig, makeConfigModuleOptions, mongoConfig, redisConfig } from '@mogi/bun-shared/configs';
-import { isLocal } from '@mogi/bun-shared/helpers';
-import { RedisModule } from '@mogi/bun-shared/modules/redis';
+import { MongoConfig, RedisConfig, SharedConfig, makeConfigModuleOptions, mongoConfig, redisConfig } from '@mogi/bun/configs';
+import { isLocal } from '@mogi/bun/helpers';
+import { RedisModule } from '@mogi/bun/modules/redis';
 import { Module, OnApplicationShutdown } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { InjectConnection, MongooseModule } from '@nestjs/mongoose';

@@ -1,10 +1,9 @@
+import { makeConfigModuleOptions, mongoConfig } from '@mogi/bun/configs';
+import { makeMongoModuleOptions } from '@mogi/bun/providers/mongo';
 import { Module } from '@nestjs/common';
-import { ScrapingModule } from './scraping';
 import { ConfigModule } from '@nestjs/config';
-import { makeConfigModuleOptions } from '@mogi/bun-shared/configs';
-import { mongoConfig } from '@mogi/bun-shared/configs';
 import { MongooseModule } from '@nestjs/mongoose';
-import { makeMongoModuleOptions } from '@mogi/bun-shared/providers/mongo';
+import { ScrapingModule } from './scraping';
 
 @Module({
   imports: [
@@ -15,4 +14,4 @@ import { makeMongoModuleOptions } from '@mogi/bun-shared/providers/mongo';
     ScrapingModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }

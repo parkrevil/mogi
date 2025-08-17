@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 
-	"go-shared/common"
+	"go/common"
 
 	"go.uber.org/fx"
 	"go.uber.org/zap"

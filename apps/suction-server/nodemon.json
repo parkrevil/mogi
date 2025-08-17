@@ -1,14 +1,14 @@
 {
-  "exec": "protoc --go_out=../../packages/go-shared/pb --proto_path=../../packages/go-shared/proto ../../packages/go-shared/proto/*.proto && go run .",
+  "exec": "protoc --go_out=../../packages/go/pb --proto_path=../../packages/go/proto ../../packages/go/proto/*.proto && go run .",
   "watch": [
     "../../.env.local",
-    "../../packages/go-shared/**/*",
+    "../../packages/go/**/*",
     "."
   ],
   "ext": "go,mod,sum,json,proto",
   "ignore": [
     "nodemon.json",
-    "../../packages/go-shared/pb/**/*"
+    "../../packages/go/pb/**/*"
   ],
   "delay": 500,
   "env": {

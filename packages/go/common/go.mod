@@ -1,4 +1,4 @@
-module go-shared/common
+module go/common
 
 go 1.25.0
 

@@ -2,7 +2,7 @@
   "exec": "go run .",
   "watch": [
     "../../.env.local",
-    "../../packages/go-shared/**/*",
+    "../../packages/go/**/*",
     "."
   ],
   "ext": "go,mod,sum,json",

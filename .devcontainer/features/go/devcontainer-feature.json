@@ -1,0 +1,25 @@
+{
+  "id": "go",
+  "name": "Go",
+  "version": "1.0.0",
+  "description": "Installs Go language and tools",
+  "init": true,
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "golang.Go"
+      ],
+      "settings": {
+        "go.useLanguageServer": true,
+        "go.toolsManagement.checkForUpdates": "local",
+        "go.formatTool": "goimports",
+        "go.lintTool": "golangci-lint"
+      }
+    }
+  },
+  "containerEnv": {
+    "GOROOT": "/usr/local/go",
+    "GOPATH": "/home/vscode/go",
+    "PATH": "/usr/local/go/bin:/home/vscode/go/bin:${PATH}"
+  }
+}

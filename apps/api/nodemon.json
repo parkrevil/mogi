@@ -4,7 +4,7 @@
   },
   "watch": [
     "../../.env.local",
-    "../../packages/bun-shared/**/*",
+    "../../packages/bun/**/*",
     "src/**",
     "package.json",
     "tsconfig.json"

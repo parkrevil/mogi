@@ -1,4 +1,4 @@
-module go-shared/pb
+module go/pb
 
 go 1.25.0
 

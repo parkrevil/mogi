@@ -8,8 +8,8 @@ import (
 	"net"
 	"time"
 
-	"go-shared/common"
-	"go-shared/pb"
+	"go/common"
+	"go/pb"
 
 	"github.com/golang/snappy"
 	"github.com/quic-go/quic-go"
@@ -138,7 +138,7 @@ func (qs *QuicServer) handleStream(stream *quic.Stream) {
 		}
 
 		compressedData := buffer[:n]
-		
+
 		// TODO: Snappy Decompression Testing Requirements
 		// 1. Decompression Performance Testing:
 		//    - Measure decompression time for different data sizes
@@ -168,7 +168,7 @@ func (qs *QuicServer) handleStream(stream *quic.Stream) {
 		//    - Test different buffer sizes for optimal performance
 		//    - Consider async decompression for large data
 		//    - Implement decompression timeout handling
-		
+
 		// Decompress data with snappy
 		decompressedData, err := snappy.Decode(nil, compressedData)
 		if err != nil {
@@ -198,7 +198,7 @@ func (qs *QuicServer) handleStream(stream *quic.Stream) {
 			zap.Uint64("stream_id", uint64(stream.StreamID())))
 
 		// Send response back to client
-		response := fmt.Sprintf("Server received compressed protobuf (original: %d bytes, compressed: %d bytes, ratio: %.1f%%)", 
+		response := fmt.Sprintf("Server received compressed protobuf (original: %d bytes, compressed: %d bytes, ratio: %.1f%%)",
 			len(decompressedData), len(compressedData), compressionRatio)
 		_, err = stream.Write([]byte(response))
 		if err != nil {

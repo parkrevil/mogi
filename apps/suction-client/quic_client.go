@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
-	"go-shared/common"
-	"go-shared/pb"
+	"go/common"
+	"go/pb"
 
 	"github.com/cenkalti/backoff/v5"
 	"github.com/golang/snappy"
@@ -43,18 +43,18 @@ func (dp *DataPool) AddData(data *pb.ClientData) {
 func (dp *DataPool) GetAndClearData() []*pb.ClientData {
 	dp.mu.Lock()
 	defer dp.mu.Unlock()
-	
+
 	if len(dp.items) == 0 {
 		return nil
 	}
-	
+
 	// Create a copy of the data
 	data := make([]*pb.ClientData, len(dp.items))
 	copy(data, dp.items)
-	
+
 	// Clear the pool
 	dp.items = dp.items[:0]
-	
+
 	return data
 }
 
@@ -76,7 +76,7 @@ type QuicClient struct {
 // AddExternalData adds external data to the client's data pool
 func (qc *QuicClient) AddExternalData(data *pb.ClientData) {
 	qc.dataPool.AddData(data)
-	qc.logger.Debug("External data added to pool", 
+	qc.logger.Debug("External data added to pool",
 		zap.Int("pool_size", qc.dataPool.GetDataCount()),
 		zap.String("message", data.Message))
 }
@@ -192,7 +192,7 @@ func (qc *QuicClient) handleConnection(ctx context.Context) error {
 		case <-ticker.C:
 			// Get all data from the pool
 			poolData := qc.dataPool.GetAndClearData()
-			
+
 			if len(poolData) == 0 {
 				qc.logger.Debug("No data in pool to send")
 				continue
@@ -245,7 +245,7 @@ func (qc *QuicClient) handleConnection(ctx context.Context) error {
 			//    - Compare with other compression algorithms (gzip, lz4)
 			//    - Test different compression levels
 			//    - Implement adaptive compression based on data characteristics
-			
+
 			// Compress data with snappy
 			protobufData, err := proto.Marshal(batchMessage)
 			if err != nil {
@@ -262,7 +262,7 @@ func (qc *QuicClient) handleConnection(ctx context.Context) error {
 				return err
 			}
 
-			qc.logger.Info("Batch snappy compressed protobuf transmission", 
+			qc.logger.Info("Batch snappy compressed protobuf transmission",
 				zap.Int("batch_items", len(poolData)),
 				zap.Int("total_sensors", totalSensors),
 				zap.Int("protobuf_size", len(protobufData)),

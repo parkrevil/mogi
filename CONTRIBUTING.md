@@ -18,19 +18,20 @@ git clone https://github.com/parkrevil/mogi.git
 cd mogi
 ```
 
-### 2. VSCode / Cursor에서 Dev Container 실행
+### Dev Container 실행
+**호스트에 Docker가 설치되어 있어야 합니다.**
 1. VS Code / Cursor에서 프로젝트 폴더를 엽니다.
 2. `Ctrl+Shift+P` (또는 `Cmd+Shift+P`)를 눌러 명령 팔레트를 엽니다.
 3. `Dev Containers: Rebuid and Reopen in Container`를 선택합니다.
-4. 컨테이너 빌드 및 설정이 자동으로 완료됩니다.
+4. 컨테이너 빌드 및 설정이 진행됩니다.
 5. `🚀 Ready to start development!` 메시지가 나오면 설정이 완료 된 것입니다.
 
-> [!NOTE]
-> Dev Container는 다음을 자동으로 설정합니다:
-> - Docker 환경 설정
-> - Docker Container 빌드 및 실행
-> - 개발 도구 설치 (Bun, Go tools 등)
->   - 프로젝트 의존성 설치
+> [!TIP]
+> Dev Container 실행 시 ```docker run ...``` 에러가 발생한다면 호스트에서 아래 명령어를 실행해주세요.
+> ```bash
+> sudo usermod -aG docker $USER
+> ```
+
 
 ### 3. 실행
 ```bash

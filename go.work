@@ -3,6 +3,6 @@ go 1.25.0
 use (
 	./apps/suction-client
 	./apps/suction-server
-	./packages/go-shared/common
-	./packages/go-shared/pb
+	./packages/go/common
+	./packages/go/pb
 )

@@ -5,8 +5,8 @@ go 1.25.0
 require (
 	github.com/golang/snappy v1.0.0
 	github.com/quic-go/quic-go v0.54.0
-	go-shared/common v0.0.0
-	go-shared/pb v0.0.0
+	go/common v0.0.0
+	go/pb v0.0.0
 	go.uber.org/fx v1.24.0
 	go.uber.org/zap v1.27.0
 	google.golang.org/protobuf v1.36.7
@@ -25,6 +25,6 @@ require (
 	golang.org/x/tools v0.36.0 // indirect
 )
 
-replace go-shared/common => ../../packages/go-shared/common
+replace go/common => ../../packages/go/common
 
-replace go-shared/pb => ../../packages/go-shared/pb
+replace go/pb => ../../packages/go/pb

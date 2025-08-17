@@ -1,5 +1,5 @@
 {
-  "name": "@mogi/bun-shared",
+  "name": "@mogi/bun",
   "main": "index.ts",
   "types": "index.ts"
 }

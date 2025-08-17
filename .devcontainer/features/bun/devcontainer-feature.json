@@ -1,0 +1,17 @@
+{
+  "id": "bun",
+  "name": "Bun",
+  "version": "1.0.0",
+  "description": "Installs Bun language",
+  "init": true,
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "oven.bun-vscode"
+      ],
+      "settings": {
+        "bun.runtime": "/usr/local/bin"
+      }
+    }
+  }
+}

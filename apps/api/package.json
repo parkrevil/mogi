@@ -11,7 +11,7 @@
     "@nestjs/mongoose": "^10.0.4",
     "mongoose": "^8.6.0",
     "reflect-metadata": "^0.2.2",
-    "@mogi/bun-shared": "workspace:*"
+    "@mogi/bun": "workspace:*"
   },
   "devDependencies": {}
 }

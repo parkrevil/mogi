@@ -6,7 +6,7 @@
     "apps/api",
     "apps/scraper",
     "apps/website",
-    "packages/bun-shared"
+    "packages/bun"
   ],
   "author": "revil",
   "email": "revil.com@gmail.com",
@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/revil/mogi/issues"
   },
-  "homepage": "https://github.com/revil/mogi#readme",
+  "homepage": "httpsㅔ://github.com/revil/mogi#readme",
   "engines": {
     "bun": ">=1.2.0"
   },
