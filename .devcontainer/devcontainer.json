@@ -12,14 +12,18 @@
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
     "ghcr.io/devcontainers/features/golang:1": {
       "version": "1.25.0"
+    },
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "2.44.0"
     }
   },
   "customizations": {
     "vscode": {
-      "extensions": [],
+      "extensions": [
+        "golang.Go"
+      ],
       "settings": {
         "go.useLanguageServer": true,
-        "go.gopath": "/go",
         "go.toolsManagement.checkForUpdates": "local",
         "go.formatTool": "goimports",
         "go.lintTool": "golangci-lint",

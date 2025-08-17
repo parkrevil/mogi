@@ -7,22 +7,17 @@ echo "🚀 Setting up Mogi Development Environment..."
 # =============================================================================
 # 1. SYSTEM SETUP
 # =============================================================================
-echo "📦 Updating system packages..."
-sudo apt-get update -qq
-
-echo "🛠️ Installing essential utilities..."
+echo "📦 Initializing system packages..."
+sudo apt-get update -qq -y
 sudo apt-get install -y -qq \
     curl \
     wget \
-    git \
     vim \
     htop \
     tree \
     jq \
     unzip \
     protobuf-compiler
-
-echo "📦 Upgrading system packages..."
 sudo apt-get upgrade -qq
 
 # =============================================================================
@@ -37,32 +32,17 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
-if ! command -v docker-compose &> /dev/null; then
-    echo "❌ Docker Compose not found. Please ensure Docker Desktop is properly installed."
-    exit 1
-fi
-
 # Check if Docker daemon is running
 echo "🔍 Checking Docker daemon..."
 if ! docker info > /dev/null 2>&1; then
-    echo "❌ Docker daemon is not running. Please:"
-    echo "   1. Start Docker Desktop on your host machine"
-    echo "   2. Ensure Docker Desktop is running and accessible"
-    echo "   3. Restart your Dev Container"
+    echo "❌ Docker daemon is not running."
     exit 1
 fi
 
-# Verify installations
-echo "🔍 Verifying Docker installations..."
-docker --version
-docker-compose --version
-echo "✅ Docker and Docker Compose installed"
-
 # Set Docker BuildKit to 0 to avoid bake definition issues
-echo "🔧 Setting Docker BuildKit to 0..."
-echo 'export DOCKER_BUILDKIT=0' >> ~/.bashrc
-export DOCKER_BUILDKIT=0
-source ~/.bashrc
+#echo "🔧 Setting Docker BuildKit to 0..."
+#echo 'export DOCKER_BUILDKIT=0' >> ~/.bashrc
+#source ~/.bashrc
 
 # Create necessary directories
 echo "📁 Creating necessary directories..."
@@ -73,11 +53,11 @@ mkdir -p ./.container-volumes/redis-stack/data
 # 3. CONTAINERS SETUP
 # =============================================================================
 # Build and start containers
-echo "🔨 Building containers..."
-docker compose -f ./docker-compose.yml build --no-cache
+#echo "🔨 Building containers..."
+#docker compose -f ./docker compose.yml build --no-cache
 
 echo "🚀 Starting containers..."
-docker compose -f ./docker-compose.yml up -d
+docker compose up -d
 
 # Wait for MongoDB to be ready
 echo "⏳ Waiting for MongoDB to be ready..."
@@ -153,16 +133,22 @@ echo "🔧 Setting up development tools..."
 # Install Bun
 echo "🍞 Installing Bun v1.2.20..."
 curl -fsSL https://bun.sh/install | bash -s "bun-v1.2.20"
-export PATH="$HOME/.bun/bin:$PATH"
 echo 'export PATH="$HOME/.bun/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
+
+if ! command -v bun &> /dev/null; then
+    echo "Bun could not be found, exiting..."
+    exit 1
+fi
 
 # Install Go tools
 echo "🐹 Installing Go tools..."
 go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.7
+echo 'export PATH="$PATH:$(go env GOPATH)/bin"' >> ~/.bashrc
+
+source ~/.bashrc
 
 # =============================================================================
-# 6. PROJECT DEPENDENCIES
+# 6. DEPENDENCIES
 # =============================================================================
 echo "📚 Installing project dependencies..."
 
