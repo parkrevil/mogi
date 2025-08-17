@@ -24,7 +24,7 @@ body {
 }
 
 .menu>li>.link {
-  @apply w-full pl-10 py-3.5 text-base;
+  @apply w-full pl-6 py-3.5 text-base;
 }
 
 .menu>li>.link:active {

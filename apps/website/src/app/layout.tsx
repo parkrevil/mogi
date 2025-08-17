@@ -32,7 +32,12 @@ export default function RootLayout({
               <ul className="menu">
                 {navigation.map((item) => (
                   <li key={item.href}>
-                    <Link href={item.href} className="link">{item.label}</Link>
+                    <Link href={item.href} className="link">
+                      <div className="flex flex-row items-center">
+                        <div className="flex justify-center items-center w-8 mr-2 text-center">{item.icon}</div>
+                        {item.label}
+                      </div>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -42,10 +47,10 @@ export default function RootLayout({
               사용자
             </div>
           </aside>
-          <main className="flex-1 h-full max-h-full min-h-full rounded-4xl glass">
+          <main className="flex-1 h-full max-h-full min-h-full px-9 pt-6 rounded-4xl glass">
             <PageHeader />
 
-            <div className="mt-6 mx-7">
+            <div className="mt-6">
               {children}
             </div>
           </main>
