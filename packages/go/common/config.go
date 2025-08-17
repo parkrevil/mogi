@@ -30,6 +30,7 @@ type Config struct {
 	QuicServerInitialConnectionReceiveWindow uint64
 	QuicServerMaxConnectionReceiveWindow     uint64
 	QuicClientConnectionAddress              string
+	RedisURL                                 string
 }
 
 func NewConfig(logger *zap.Logger) (*Config, error) {
@@ -104,6 +105,11 @@ func NewConfig(logger *zap.Logger) (*Config, error) {
 		return nil, err
 	}
 
+	redisURI, err := validateAndGetEnv("REDIS_URI", "string")
+	if err != nil {
+		return nil, err
+	}
+
 	return &Config{
 		Env:                                      env,
 		QuicMaxIdleTimeout:                       quicMaxIdleTimeout.(int64),
@@ -117,6 +123,7 @@ func NewConfig(logger *zap.Logger) (*Config, error) {
 		QuicServerInitialConnectionReceiveWindow: quicServerInitialConnectionReceiveWindow.(uint64),
 		QuicServerMaxConnectionReceiveWindow:     quicServerMaxConnectionReceiveWindow.(uint64),
 		QuicClientConnectionAddress:              quicClientConnectionAddress.(string),
+		RedisURL:                                 redisURI.(string),
 	}, nil
 }
 

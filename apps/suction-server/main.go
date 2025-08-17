@@ -12,7 +12,7 @@ import (
 func main() {
 	app := fx.New(
 		common.Module,
-		fx.Provide(NewQuicServer),
+		fx.Provide(NewQuicServer, NewRedisClient),
 		fx.Invoke(func(lc fx.Lifecycle, logger *zap.Logger, quicServer *QuicServer) {
 			logger.Info("Starting application")
 

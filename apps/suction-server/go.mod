@@ -5,14 +5,17 @@ go 1.25.0
 require (
 	github.com/golang/snappy v1.0.0
 	github.com/quic-go/quic-go v0.54.0
-	go/common v0.0.0
-	go/pb v0.0.0
+	github.com/redis/go-redis/v9 v9.12.1
 	go.uber.org/fx v1.24.0
 	go.uber.org/zap v1.27.0
+	go/common v0.0.0
+	go/pb v0.0.0
 	google.golang.org/protobuf v1.36.7
 )
 
 require (
+	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 	go.uber.org/dig v1.19.0 // indirect
 	go.uber.org/mock v0.5.2 // indirect
