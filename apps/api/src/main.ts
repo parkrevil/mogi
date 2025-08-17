@@ -8,11 +8,11 @@ import { Config, HttpServerConfig } from './core/configs';
 bootstrap(async () => {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
-  const httpServerConfig = configService.get<HttpServerConfig>(Config.HttpServer);
+  const { listening } = configService.get<HttpServerConfig>(Config.HttpServer);
 
-  await app.listen(httpServerConfig.port, httpServerConfig.host);
+  await app.listen(listening.port, listening.host);
 
-  console.log(`Server is running on ${httpServerConfig.host}:${httpServerConfig.port}`);
+  console.log(`Server is running on ${listening.host}:${listening.port}`);
 
   return app;
 });

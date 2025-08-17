@@ -1,4 +1,6 @@
 export interface HttpServerConfig {
-  host: string;
-  port: number;
+  listening: {
+    host: string;
+    port: number;
+  },
 }

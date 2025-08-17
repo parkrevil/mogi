@@ -1,7 +1,7 @@
 {
   "name": "website",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "NODE_ENV=local HOST=0.0.0.0 PORT=10000 next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

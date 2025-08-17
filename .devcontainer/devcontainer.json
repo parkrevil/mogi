@@ -16,7 +16,8 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "golang.Go"
+        "golang.Go",
+        "bradlc.vscode-tailwindcss"
       ],
       "settings": {
         "typescript.preferences.includePackageJsonAutoImports": "on",

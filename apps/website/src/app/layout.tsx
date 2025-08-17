@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -23,12 +24,41 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="ko" className="w-screen h-screen p-0 m-0">
+      <body className="w-full h-full flex justify-center items-center p-20 m-0 bg-cover bg-center bg-[url('/images/bg.webp')] bg-no-repeat text-(--foreground)">
+        <div className="flex flex-row w-full h-full rounded-4xl space-x-4">
+          <aside className="flex flex-col w-64 h-full max-h-full min-h-full overflow-hidden rounded-4xl glass">
+            <div className="text-center text-2xl font-bold mt-6">
+              <h1 className="font-bold">
+                🦟
+                <br />
+                모기
+              </h1>
+            </div>
+
+            <div className="flex-1 mt-8">
+              <ul className="menu">
+                <li>
+                  <Link href="/" className="link">홈</Link>
+                </li>
+                <li>
+                  <Link href="/" className="link">데미지 측정</Link>
+                </li>
+                <li>
+                  <Link href="/" className="link">랭킹</Link>
+                </li>
+              </ul>
+            </div>
+
+            <div className="flex flex-col w-full p-4">
+              사용자
+            </div>
+          </aside>
+          <main className="flex-1 h-full max-h-full min-h-full rounded-4xl glass">
+            {children}
+          </main>
+        </div>
       </body>
-    </html>
+    </html >
   );
 }
